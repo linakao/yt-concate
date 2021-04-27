@@ -31,3 +31,10 @@ class Utils:
     def video_list_exists(self, channel_id):
         path = self.get_video_list_path(channel_id)
         return os.path.exists(path) and os.path.getsize(path) > 0
+
+    def get_error_video_list_path(self, channel_id):
+        return os.path.join(DOWNLOADS_DIR, channel_id + '_error_video_list.txt')
+
+    def error_video_list_exists(self, channel_id):
+        path = self.get_error_video_list_path(channel_id)
+        return os.path.exists(path) and os.path.getsize(path) > 0
