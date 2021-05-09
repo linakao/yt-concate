@@ -1,15 +1,12 @@
-import os
-from pprint import pprint
-
 from .step import Step
-from yt_concate.settings import CAPTIONS_DIR
 
 
 class ReadCaptions(Step):
     def process(self, data, inputs, utils):
-        data = {}
-        for caption_file in os.listdir(CAPTIONS_DIR):
-            with open(os.path.join(CAPTIONS_DIR, caption_file), 'r') as c:
+        for yt in data:
+            if not utils.caption_file_exists(yt):
+                continue
+            with open(yt.caption_filepath, 'r') as c:
                 time_line = False
                 time = None
                 captions = {}
@@ -23,7 +20,5 @@ class ReadCaptions(Step):
                         time_line = False
                     else:
                         continue
-            data[caption_file] = captions
-        pprint(data)
+            yt.caption = captions
         return data
-
