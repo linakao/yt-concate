@@ -4,7 +4,7 @@ from pytube import YouTube
 
 from yt_concate.pipeline.steps.step import Step
 from yt_concate.pipeline.steps.step import StepException
-from .get_video_list import GetVideoList
+
 
 
 class DownloadCaptions(Step):
@@ -14,7 +14,7 @@ class DownloadCaptions(Step):
         start = time.time()
         error_list = [] # add error video list in order to don't take time to read again
         if utils.error_video_list_exists(channel_id):
-            error_list = GetVideoList().read_file(utils.get_error_video_list_path(channel_id))
+            error_list = utils.read_file(utils.get_error_video_list_path(channel_id))
 
         for yt in data:
             if utils.caption_file_exists(yt):
@@ -35,7 +35,7 @@ class DownloadCaptions(Step):
             text_file = open(yt.caption_filepath, "w", encoding='utf-8')
             text_file.write(en_caption_convert_to_srt)
             text_file.close()
-        GetVideoList().write_to_file(error_list, utils.get_error_video_list_path(channel_id))
+        utils.write_to_file(error_list, utils.get_error_video_list_path(channel_id))
         end = time.time()
         print('downloading captions took', end - start, 'seconds')
         return data
